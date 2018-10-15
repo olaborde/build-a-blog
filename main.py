@@ -36,5 +36,15 @@ def index():
     return render_template('index.html')
 
 
+@app.route('/newpost', methods=['POST', 'GET'])
+def newpost():
+
+    return render_template('newpost.html')
+
+@app.route('/blog', methods=['POST', 'GET'])
+def blog():
+
+    return render_template('blog.html')
+
 if __name__ == '__main__':
     app.run()
