@@ -13,12 +13,16 @@ class Blog(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     title = db.Column(db.String(120), nullable=False)
     description = db.Column(db.Text, nullable=False)
+    publisher = db.Column(db.String(50), nullable=False)
+    date_posted = db.Column(db.DateTime)
   
 
-    def __init__(self,title, description):
+    def __init__(self,title, description, publisher, date_posted):
         # self.id = id
         self.title = title
         self.description = description
+        self.publisher = publisher
+        self.date_posted = datetime.now()
       
 
 
@@ -29,11 +33,13 @@ blogs = []
 @app.route('/', methods=['POST', 'GET'])
 def index():
 
-    if request.method == 'POST':
-        blog = request.form['blog']
-        blogs.append(blog)
+    blogs = Blog.query.all()
 
-    return render_template('index.html')
+    # if request.method == 'POST':
+    #     blog = request.form['blog']
+    #     blogs.append(blog)
+
+    return render_template('index.html', blogs=blogs)
 
 
 @app.route('/newpost', methods=['POST', 'GET'])
@@ -44,17 +50,21 @@ def newpost():
 def addpost(): 
     title = request.form['title']
     description = request.form['description']
-
-    blog_entry = Blog(title=title, description=description)
+    publisher = request.form['publisher']
+    blog_entry = Blog(title=title, description=description, publisher=publisher, date_posted=datetime.now())
     db.session.add(blog_entry)
     db.session.commit()
 
-    return redirect(url_for('blog'))   
+    return redirect(url_for('index'))   
 
-@app.route('/blog', methods=['POST', 'GET'])
-def blog():
-    return render_template('blog.html')
+@app.route('/blog/<int:blog_id>')
+def blog(blog_id):
+    blog = Blog.query.filter_by(id=blog_id).one()
+    date_posted =blog.date_posted.strftime('%B %d, %Y')
+    return render_template('blog.html', blog=blog, date_posted=date_posted)
   
 
 if __name__ == '__main__':
     app.run()
+
+    
