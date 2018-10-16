@@ -4,21 +4,25 @@
 <div class="row">
 
 <div class="row">
-    <form method="POST" action="/newpost" class="col s12">
+<form method="POST" action="{{ url_for('addpost') }}" class="col s12">
         <div class="row">
             <div class="input-field col s6">
-                <input id="input_text" type="text" data-length="10">
+                <input name="title" id="input_text" type="text" data-length="10">
                 <label for="input_text">Title</label>
             </div>
         </div>
         <div class="row">
             <div class="input-field col s12">
-                <textarea id="textarea2" class="materialize-textarea" data-length="120"></textarea>
+                <textarea name="description" id="textarea2" class="materialize-textarea" data-length="120"></textarea>
                 <label for="textarea2">Textarea</label>
             </div>
         </div>
+        <button class="btn waves-effect waves-light">
+            <a class="btn-floating btn-large waves-effect waves-light red" type="submit" value="submit"><i class="material-icons">add</i></a>
+        </button>
+        
 
-        <a class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">add</i></a>
+        
     </form>
 </div>
 
