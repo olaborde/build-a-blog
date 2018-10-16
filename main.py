@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, render_template
+from flask import Flask, request, redirect, render_template, url_for
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
@@ -15,8 +15,8 @@ class Blog(db.Model):
     description = db.Column(db.Text, nullable=False)
   
 
-    def __init__(self, id,title, description):
-        self.id = id
+    def __init__(self,title, description):
+        # self.id = id
         self.title = title
         self.description = description
       
@@ -40,11 +40,21 @@ def index():
 def newpost():
 
     return render_template('newpost.html')
+@app.route('/addpost', methods=['POST', 'GET'])
+def addpost(): 
+    title = request.form['title']
+    description = request.form['description']
+
+    blog_entry = Blog(title=title, description=description)
+    db.session.add(blog_entry)
+    db.session.commit()
+
+    return redirect(url_for('blog'))   
 
 @app.route('/blog', methods=['POST', 'GET'])
 def blog():
-
     return render_template('blog.html')
+  
 
 if __name__ == '__main__':
     app.run()
