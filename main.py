@@ -26,8 +26,6 @@ class Blog(db.Model):
       
 
 
-
-
 blogs = []
 
 @app.route('/', methods=['POST', 'GET'])
